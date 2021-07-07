@@ -1,0 +1,31 @@
+
+<h1 class="text-center">
+    Product
+</h1>
+   
+<div class="container my-4 mx-6">
+    <div class="row mb-2">
+    {% for i in b %}
+        <div class="col-md-6">
+           <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">{{i.cat}}</strong>
+            <h3 class="mb-0">{{i.name}}</h3>
+            <h4>{{i.price}}</h4>
+            <!--<div class="mb-1 text-muted">Nov 12</div>-->
+            <p class="card-text mb-auto">{{i.decription}}</</p>
+
+            <div class="mb-auto"><button class="btn btn-primary">Add to cart</button>
+            <button class="btn btn-primary">Buy now</button></div>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img class="bd-placeholder-img" width="200" height="250" src="{{i.image.url}}"alt="{{i.image.url}}">
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+    
+
