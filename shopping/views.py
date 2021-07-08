@@ -4,7 +4,7 @@ from django.views import View
 from shopping.vailid import *
 class homev(View):
 	def get(self,request):
-		print(len(request.session.items()))
+		# print(len(request.session.items()))
 		# if request.session.get("customername")==None:
 		# 	request.session["customername"]="Unknown"
 		if len(request.session.items())==0:
@@ -77,11 +77,15 @@ class loginv(View):
 
 class buyv(View):
     def get(self,request,productid):
+        print(product.objects.get(id= productid))
         return redirect('home')
 
-class cartv(View):
+class cartav(View):
+    
     def get(self,request,productid):
+        print(product.objects.get(id=productid))
         return redirect('home')
+        
     def post(self,request,productid):
         return redirect('home')
 
