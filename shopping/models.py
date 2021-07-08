@@ -23,8 +23,15 @@ class product(models.Model):
     cat=models.ForeignKey(catagory,on_delete=models.CASCADE,default=1)
     def __str__(self):
         return self.name
-
-
+#ORDERS
+class product(models.Model):
+    Order_id=models.CharField(unique=True,null=False ,blank=False)
+    product_id=models.ForeignKey(product, on_delete=models.CASCADE)
+    price=models.IntegerField(default=0)
+    customer_id=models.ForeignKey(signinm, on_delete=models.CASCADE)
+    email_id=models.EmailField()
+    def __str__(self):
+        return self.Order_id
     
     
 
