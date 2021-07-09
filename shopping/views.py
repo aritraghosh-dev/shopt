@@ -43,8 +43,10 @@ class homev(View):
 		# 	'b':product.objects.all(),
 		# 	'catagory':catagory.objects.all(),}
 		return render(request,'home.html',c)
-def cartv(request):
-	return render(request,'cart.html')
+
+# def cartv(request):
+# 	return render(request,'cart.html')
+
 def logout(request):
 	request.session.flush()
 	return redirect('home')
@@ -100,13 +102,19 @@ class buyv(View):
                 ).save()
             return redirect('home')
 
+# def cartv(request):
+# 	return render(request,'cart.html')
+class profile(View):
+    def get(self,request):
+        a=signinm.objects.get(pk=request.session["customerid"])
+        return render(request,'profile.html',{"a":a})
 class cartav(View):
     
-    def get(self,request,productid):
-        print(product.objects.get(id=productid))
-        return redirect('home')
+    def get(self,request):
+       # print(product.objects.get(id=productid))
+        return render(request,'cart.html')
         
-    def post(self,request,productid):
+    def post(self,request):
         return redirect('home')
 
 
@@ -168,7 +176,7 @@ def productv(request,catagoryu):
 
 class orderv(View):
 	def get(self,request):
-            a=order.objects.filter(email_id=request.session["customermail"])
+            a=order.objects.filter(email_id=request.session["customermail"],In_cart=False)
             print(a.count())
             return render( request , 'order.html',{"a":a,"i":a.count()})
 	def post(self,request):
