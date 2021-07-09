@@ -24,14 +24,15 @@ class product(models.Model):
     def __str__(self):
         return self.name
 #ORDERS
-class product(models.Model):
-    Order_id=models.CharField(unique=True,null=False ,blank=False)
+class order(models.Model):
+    Order_id=models.IntegerField()
     product_id=models.ForeignKey(product, on_delete=models.CASCADE)
     price=models.IntegerField(default=0)
     customer_id=models.ForeignKey(signinm, on_delete=models.CASCADE)
     email_id=models.EmailField()
+    In_cart=models.BooleanField()
     def __str__(self):
-        return self.Order_id
+        return str(self.Order_id)
     
     
 

@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from shopping.models import *
 from django.views import View
 from shopping.vailid import *
+from datetime import datetime
 class homev(View):
 	def get(self,request):
 		# print(len(request.session.items()))
@@ -57,7 +58,13 @@ class contractv(View):
 
 class loginv(View):
 	def get(self,request):
-		return render(request,'login.html')
+            try :
+                message=request.session["message"]
+                request.session.flush()
+                return render(request,'login.html',{"message":message})
+            except :
+                return render(request,'login.html')
+		
 	def post(self,request):
 		email=request.POST.get('Email1')
 		password1=request.POST.get('password1')
@@ -67,6 +74,7 @@ class loginv(View):
 			request.session["customermail"]=a[0].email
 			request.session["customerid"]=a[0].pk
 			request.session["requestc"]="1"
+
 			return redirect('home')
 		else:
 			if a.count()==0:
@@ -77,8 +85,20 @@ class loginv(View):
 
 class buyv(View):
     def get(self,request,productid):
-        print(product.objects.get(id= productid))
-        return redirect('home')
+        if len(request.session.items())==0:
+            request.session["message"]=["Please login or Signin First"]
+            return redirect('signin')
+        else : 
+            print("product purchased")
+            order(
+                Order_id=int(datetime.now().strftime("%d%m%y%M")+datetime.now().strftime("%H%M%S")),
+                product_id=product.objects.get(pk=productid),
+                price=product.objects.get(pk=productid).price,
+                customer_id=signinm.objects.get(pk=request.session["customerid"]),
+                email_id=request.session["customermail"],
+                In_cart=False,
+                ).save()
+            return redirect('home')
 
 class cartav(View):
     
@@ -92,7 +112,13 @@ class cartav(View):
 
 class signinv(View):
 	def get(self,request):
-		return render(request,'signin.html')
+            try :
+                message=request.session["message"]
+                request.session.flush()
+                return render(request,'signin.html',{"message":message})
+            except :
+            
+                return render(request,'signin.html')
 	def post(self,request):
 		name=request.POST.get('name')
 		email=check(request.POST.get('Email1'))
@@ -127,6 +153,7 @@ class signinv(View):
 			if password is False:
 				message.append("BOTH PASSWORD SHOULD BE SAME, ")
 			return render(request,'signin.html',{'message':message})
+
 def productv(request,catagoryu):
 	d=product.objects.filter(cat=catagory.objects.filter(name=catagoryu).get().pk)
 	message= False
@@ -138,6 +165,14 @@ def productv(request,catagoryu):
 		}
 	return render(request,'products.html',c)
 
+
+class orderv(View):
+	def get(self,request):
+            a=order.objects.filter(email_id=request.session["customermail"])
+            print(a.count())
+            return render( request , 'order.html',{"a":a,"i":a.count()})
+	def post(self,request):
+		pass
 
 # def footerv(request):
 # 	return render(request,'footer.html')
