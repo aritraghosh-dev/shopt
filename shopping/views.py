@@ -3,6 +3,7 @@ from shopping.models import *
 from django.views import View
 from shopping.vailid import *
 from datetime import datetime
+from django.urls import reverse
 class homev(View):
 	def get(self,request):
 		# print(len(request.session.items()))
@@ -108,14 +109,23 @@ class profile(View):
     def get(self,request):
         a=signinm.objects.get(pk=request.session["customerid"])
         return render(request,'profile.html',{"a":a})
-class cartav(View):
+class cartv(View):
     
     def get(self,request):
-       # print(product.objects.get(id=productid))
-        return render(request,'cart.html')
-        
-    def post(self,request):
-        return redirect('home')
+        a=order.objects.filter(email_id=request.session["customermail"],In_cart=True)
+        return render(request,'cart.html',{"a":a,"i":a.count()})
+class cartav(View):      
+    def get(self,request,productid):
+        print(productid, request)
+        order(
+                Order_id=int(datetime.now().strftime("%d%m%y%M")+datetime.now().strftime("%H%M%S")),
+                product_id=product.objects.get(pk=productid),
+                price=product.objects.get(pk=productid).price,
+                customer_id=signinm.objects.get(pk=request.session["customerid"]),
+                email_id=request.session["customermail"],
+                In_cart=True,
+                ).save()
+        return redirect("home")
 
 
 class signinv(View):

@@ -227,7 +227,7 @@
                         <p class="card-text mb-auto">{{i.decription}} </p>
 
                         <div class="mb-auto">{%if logt%}
-                            <a href="{% url 'cart'  %}" class="btn btn-primary">Add to cart</a>
+                            <a href="{% url 'carta' productid=i.id  %}" class="btn btn-primary">Add to cart</a>
                             {%endif%}
                             <a href="{% url 'buy' productid=i.id %}" class="btn btn-primary">Buy now</a></div>
                     </div>
