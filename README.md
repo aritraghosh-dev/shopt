@@ -11,8 +11,10 @@ This project is build up as a team of Two
      
       python3 manage.py migrate
       python3 manage.py makemigrations
-      
- Then you can run 
+ and Then the database are fromed and now you can do -
+ 
       python3 manage.py runserver
+      
+      
  To run The website..
  
